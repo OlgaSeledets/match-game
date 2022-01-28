@@ -101,11 +101,15 @@ const time = () => {
 const pauseWatch = () => {
   watch.classList.add('paused');
   clearInterval(timer);
+  document.querySelector('.playing-field').style.pointerEvents = 'none';
 };
 
 const offPause = () => {
     time();
+    document.querySelector('.playing-field').style.pointerEvents = 'auto';
 }
+
+setTimeout(offPause, 5000);
 
 document.addEventListener('click', (e) =>{
 	const element = e.target;
@@ -113,10 +117,5 @@ document.addEventListener('click', (e) =>{
     if (element.id === 'off-pause') offPause();
 });
 
-function startWatch() {
-    time();
-}
-
-setTimeout(startWatch, 5000);
 
 
