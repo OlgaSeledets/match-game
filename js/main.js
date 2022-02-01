@@ -3,7 +3,14 @@
 const cards = document.querySelectorAll('.cards');
 const colors = ['red', 'red', 'blue', 'blue', 'yellow', 'yellow', 'purple', 'purple', 'pink', 'pink', 'orange', 'orange'];
 
+let results = [];
 let info = [];
+
+document.addEventListener("DOMContentLoaded", () => {
+    const scoreData = JSON.parse(localStorage.getItem('watch'));
+    results = scoreData === null ? [] : scoreData;
+    console.log(results.sort((a, b)=> a > b))
+});
 
 function shuffle(array){
     let i = array.length, j, temp;
@@ -51,6 +58,7 @@ let endGame = [];
 const winner = document.createElement('span');
 const winnerField = document.querySelector('.winner-field');
 
+
 for (let i = 0; i < cards.length; i++) {
     cards[i].addEventListener("click", () => {
         cards[i].style.backgroundColor = info[i];
@@ -72,15 +80,20 @@ for (let i = 0; i < cards.length; i++) {
                 winnerField.appendChild(winner);
                 winner.classList.add('winner');
                 winner.textContent = 'You won :)'
+
+                results.push(watch.textContent);
+                localStorage.setItem('watch', JSON.stringify(results));
             }
             
             cardsStyle = [];
             comparison = [];
+
+           
         }
     });
 }
 
-//Watch
+//Stopwatch
 
 const watch = document.querySelector('#watch');
 let milliseconds = 0;
@@ -97,7 +110,6 @@ const time = () => {
 			('0'+dateTimer.getSeconds()).slice(-2);
 	},10);
 };
-
 const pauseWatch = () => {
   watch.classList.add('paused');
   clearInterval(timer);
@@ -116,6 +128,4 @@ document.addEventListener('click', (e) =>{
 	if (element.id === 'pause') pauseWatch();
     if (element.id === 'off-pause') offPause();
 });
-
-
 
