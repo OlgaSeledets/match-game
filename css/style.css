@@ -1,15 +1,14 @@
-.playing-field {
-    margin: auto;
-    display: flex;
-    flex-wrap: wrap;
-    width: 450px;
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Abel;
 }
 
-.cards {
-    border: 3px solid;
-    width: 80px;
-    height: 80px;
-    margin: 10px 10px;
+.header {
+    position: relative;
+    height: 97px;
+    background-color: #A36BFF;
 }
 
 .newGame-btn {
@@ -27,15 +26,38 @@
     color: white;
 }
 
-#control {
-    display: flex;
-    justify-content: space-between;
-    padding: 0 585px;
+#watch {
+    width: 145px;
+    height: 82px;
+    margin: 0 auto;
+    top: calc(50% - 41px);
+    left: 0;
+    right: 0;
+    position: absolute;
+    font-size: 68px;
+    color: #FFFFFF;
 }
 
-.watches-place {
+.playing-field {
+    position: absolute;
+    margin: 0 auto;
+    top: 50%;
+    transform: translate(0, -50%);
+    left: 0;
+    right: 0;
     display: flex;
-    flex-direction: row;
+    flex-wrap: wrap;
+    width: 450px;
+}
+
+.card {
+    border: 3px solid;
+    width: 80px;
+    height: 80px;
+    margin: 10px 10px;
+    text-align: center;
+    font-size: 50px;
+    padding: 5px;
 }
 
 .buttons {
@@ -44,42 +66,14 @@
     margin-top: 16px;
 }
 
-#pause {
-    width: 60px;
-    height: 30px;
-    background-color: white; 
-    color: black; 
-    border: 2px solid #008CBA;
-    margin-left: 14px;
-    cursor: pointer;
-}
-
-#pause:hover {
-    background-color: #008CBA;
-    color: white;
-}
-
-#off-pause {
-    width: 80px;
-    height: 30px;
-    background-color: white; 
-    color: black; 
-    border: 2px solid #008CBA;
-    margin-left: 15px;
-    cursor: pointer;
-}
-
-#off-pause:hover {
-    background-color: #008CBA;
-    color: white;
-}
-
 .winner-field {
     width: 250px;
     margin: auto;
     text-align: center;
-    display: flex;
-    flex-direction: column;
+    bottom: 5%;
+    left: 0;
+    right: 0;
+    position: absolute;
 }
 
 .winner {

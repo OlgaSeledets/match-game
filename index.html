@@ -5,34 +5,22 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="./css/style.css" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Abel&family=Inter:wght@400;500&family=Jaldi:wght@400;700&display=swap" rel="stylesheet">
     <title>Match game</title>
 </head>
 <body>
+    <header class="header">
+        <button class="newGame-btn" onclick='window.location.reload(true)'>New game</button> <!-- Complete the game -->
+        <h2 id="watch">00:00</h2>
+    </header>
+    <button class="level1">Level 1</button>
+    <button class="level2">Level 2</button>
+    <button class="level3">Level 3</button>
+    <button class="level4">Level 4</button>
     <div class="playing-field">
-        <div class="cards"></div>
-        <div class="cards"></div>
-        <div class="cards"></div>
-        <div class="cards"></div>
-        <div class="cards"></div>
-        <div class="cards"></div>
-        <div class="cards"></div>
-        <div class="cards"></div>
-        <div class="cards"></div>
-        <div class="cards"></div>
-        <div class="cards"></div>
-        <div class="cards"></div>
-    </div>
-    <div id="control">
-        <button class="newGame-btn" onclick='window.location.reload(true)'>New game</button>
-        <div class="watches-place">
-            <div class="watch">
-                <h2 id="watch">00:00</h2>
-            </div>
-            <div class="buttons">
-                <button id="pause">Pause</button>
-                <button id="off-pause">Off pause</button>
-            </div>
-        </div>
+        <!-- Here will be cards  -->
     </div>
     <div class="winner-field">
     
