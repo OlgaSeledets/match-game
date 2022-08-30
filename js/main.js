@@ -8,14 +8,32 @@ const level2Btn = document.querySelector('.level2')
 const level3Btn = document.querySelector('.level3')
 const level4Btn = document.querySelector('.level4')
 
-const levels = {
-    level1: ['pink', 'pink', 'red', 'red', 'purple', 'purple', 'Fuchsia', 'Fuchsia'], //8
-    level2: ['red', 'red', 'blue', 'blue', 'yellow', 'yellow', 'purple', 'purple', 'pink', 'pink', 'orange', 'orange'], //12
-    level3: ['red', 'red', 'blue', 'blue', 'yellow', 'yellow', 'purple', 'purple', 'pink', 'pink', 'orange', 'orange','Fuchsia', 'Fuchsia', 'RosyBrown', 'RosyBrown'], //16
-    level4: ['red', 'red', 'blue', 'blue', 'yellow', 'yellow', 'purple', 'purple', 'pink', 'pink', 'orange', 'orange', 'CadetBlue', 'CadetBlue', 'MediumPurple', 'MediumPurple', 'Fuchsia', 'Fuchsia', 'RosyBrown', 'RosyBrown'], //20
+const colors = ['red', 'blue', 'yellow', 'purple', 'pink', 'orange', 'CadetBlue', 'MediumPurple', 'Fuchsia', 'RosyBrown']
+
+const levelDescriptors = {
+    level1: {
+        name: 'Level 1',
+        uniqueCardCount: 3,
+    },
+    level2: {
+        name: 'Level 2',
+        uniqueCardCount: 4,
+    },
+    level3: {
+        name: 'Level 3',
+        uniqueCardCount: 5,
+    },
+    level4: {
+        name: 'Level 4',
+        uniqueCardCount: 6,
+    },
+    level5: {
+        name: 'Level 5',
+        uniqueCardCount: 8,
+    },
 }
 let cards = []
-let info = []
+let cardElements = []
 
 let isMenuVisible = true
 
@@ -61,22 +79,32 @@ function getAllDividersOf(n) {
     return deviders
 }
 
-function createBoard(level, endGameNum) {
+function createBoard(level) {
     cards = []
+    cardElements = []
     clearBoardElement()
-    const deviders = getAllDividersOf(endGameNum * 2)
+    const uniqueCardCount = level.uniqueCardCount
+    const deviders = getAllDividersOf(uniqueCardCount * 2)
     const columnCount = deviders[deviders.length / 2]
     board.style.gridTemplateColumns = `repeat(${columnCount}, min-content)`
-    info = shuffle(level);
-    for (let i = 0; i < endGameNum * 2; i++) {
+    let colorIndex = 0
+    for (let i = 0; i < uniqueCardCount * 2; i++) {
+        const color = colors[colorIndex]
         let card = document.createElement('div')
-        board.appendChild(card)
         card.className = 'card'
-        card.style.backgroundColor = info[i]
-        cards.push(card)
+        card.style.backgroundColor = color
+        cardElements.push(card)
+        if (i % 2 === 1) {
+            colorIndex++
+        }
+    }
+    shuffle(cardElements)
+    for (const card of cardElements) {
+        board.appendChild(card)
+        cards.push({ color: card.style.backgroundColor })
     }
     setTimeout(cover, 5000)
-    play(endGameNum)
+    play(uniqueCardCount)
 }
 
 menuBtn.addEventListener('click', () => {
@@ -86,25 +114,25 @@ menuBtn.addEventListener('click', () => {
 })
 
 level1Btn.addEventListener('click', () => {
-    createBoard(levels.level1, 4)
+    createBoard(levelDescriptors.level1)
     resetTime()
     currentLevel = 1
 })
 
 level2Btn.addEventListener('click', () => {
-    createBoard(levels.level2, 6)
+    createBoard(levelDescriptors.level2)
     resetTime()
     currentLevel = 2
 })
 
 level3Btn.addEventListener('click', () => {
-    createBoard(levels.level3, 8)
+    createBoard(levelDescriptors.level3)
     resetTime()
     currentLevel = 3
 })
 
 level4Btn.addEventListener('click', () => {
-    createBoard(levels.level4, 10)
+     createBoard(levelDescriptors.level4)
     resetTime()
     currentLevel = 4
 })
@@ -121,17 +149,17 @@ function shuffle(array){
 }
 
 function cover() {
-    for (let i = 0; i < cards.length; i++) {
-        let card = cards[i]
+    for (let i = 0; i < cardElements.length; i++) {
+        let card = cardElements[i]
         card.style.backgroundColor = 'white'
         card.textContent = '?'
     }
 }
 
 function coverItem() {
-    for (let i = 0; i < cards.length; i++) {
-        let card = cards[i]
-        if (cards[i].style.border != '3px solid green') {
+    for (let i = 0; i < cardElements.length; i++) {
+        let card = cardElements[i]
+        if (cardElements[i].style.border != '3px solid green') {
             card.style.backgroundColor = 'white'
             card.textContent = '?'
         }
@@ -179,13 +207,13 @@ function theBestTime(arr, text) {
     }
 }
 
-function play(endGameNum) {
-    for (let i = 0; i < cards.length; i++) {
-        cards[i].addEventListener("click", () => {
+function play(uniqueCardCount) {
+    for (let i = 0; i < cardElements.length; i++) {
+        cardElements[i].addEventListener("click", () => {
             counterCheck.push(i)
-            cards[i].style.backgroundColor = info[i]
-            cards[i].textContent = ''
-            cardsStyle.push(cards[i].style.backgroundColor)
+            cardElements[i].style.backgroundColor = cards[i].color
+            cardElements[i].textContent = ''
+            cardsStyle.push(cardElements[i].style.backgroundColor)
             comparison.push(i);
             console.log(counterCheck.length)
             if (counterCheck.length === 2) {
@@ -197,20 +225,20 @@ function play(endGameNum) {
                 }
                 counterCheck = []
             }
-            if ((cardsStyle.length === 2 && comparison.length !== 2) || (cardsStyle.length === 2 && comparison.length === 2 && info[comparison[0]] !== info[comparison[1]])) {
+            if ((cardsStyle.length === 2 && comparison.length !== 2) || (cardsStyle.length === 2 && comparison.length === 2 && cards[comparison[0]].color !== cards[comparison[1]].color)) {
                 setTimeout(coverItem, 500);
                 cardsStyle = [];
                 comparison = [];
             } 
-            else if (cardsStyle.length === 2 && comparison.length === 2 && info[comparison[0]] === info[comparison[1]]) {
-                cards[comparison[0]].style.border = '3px solid green'
-                cards[comparison[1]].style.border = '3px solid green'
-                cards[comparison[0]].textContent = ''
-                cards[comparison[1]].textContent = ''
-                cards[comparison[0]].style.pointerEvents = 'none'
-                cards[comparison[1]].style.pointerEvents = 'none'
+            else if (cardsStyle.length === 2 && comparison.length === 2 && cards[comparison[0]].color === cards[comparison[1]].color) {
+                cardElements[comparison[0]].style.border = '3px solid green'
+                cardElements[comparison[1]].style.border = '3px solid green'
+                cardElements[comparison[0]].textContent = ''
+                cardElements[comparison[1]].textContent = ''
+                cardElements[comparison[0]].style.pointerEvents = 'none'
+                cardElements[comparison[1]].style.pointerEvents = 'none'
                 endGame.push(i)
-                if (endGame.length === endGameNum) {
+                if (endGame.length === uniqueCardCount) {
                     clearInterval(timer);
                     //document.getElementById("off-pause").disabled = true;
 
