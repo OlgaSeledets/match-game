@@ -1,11 +1,12 @@
 'use strict'
 
-const playingField = document.querySelector('.playing-field')
+const board = document.querySelector('.board')
+const menu = document.getElementById('menu')
+const menuBtn = document.getElementById('menuBtn')
 const level1Btn = document.querySelector('.level1')
 const level2Btn = document.querySelector('.level2')
 const level3Btn = document.querySelector('.level3')
 const level4Btn = document.querySelector('.level4')
-
 
 const levels = {
     level1: ['pink', 'pink', 'red', 'red', 'purple', 'purple', 'Fuchsia', 'Fuchsia'], //8
@@ -16,60 +17,78 @@ const levels = {
 let cards = []
 let info = []
 
-// if (cards.length > 0) {
-//     console.log('->', playingField.childElementCount)
-//     for (const card of cards) {
-//         playingField.removeChild(card)
-//     }
-// }
+let isMenuVisible = true
 
 const watch = document.querySelector('#watch')
 let milliseconds = 0
 let timer
 
-function createplayingField(level, endGameNum) {
-    cards = []
-    if (playingField.hasChildNodes()) {
-        while (playingField.firstChild) {
-            playingField.removeChild(playingField.firstChild)
+let cardsStyle = []
+let comparison = []
+let endGame = []
+let counterCheck = []
+
+const winner = document.createElement('span');
+const winnerField = document.querySelector('.winner-field');
+
+const timeLevels = {
+    level1: [],
+    level2: [],
+    level3: [],
+    level4: [],
+}
+
+let currentLevel
+
+function clearBoardElement() {
+    if (board.hasChildNodes()) {
+        while (board.firstChild) {
+            board.removeChild(board.firstChild)
         }
     }
-    //console.log(playingField.children)
+}
+
+function createBoard(level, endGameNum) {
+    cards = []
+    clearBoardElement()
     info = shuffle(level);
     for (let i = 0; i < endGameNum * 2; i++) {
         let card = document.createElement('div')
-        playingField.appendChild(card)
+        board.appendChild(card)
         card.className = 'card'
         card.style.backgroundColor = info[i]
         cards.push(card)
     }
     setTimeout(cover, 5000)
-    //setTimeout(time, 4000)
     play(endGameNum)
 }
 
-let currentLevel 
+menuBtn.addEventListener('click', () => {
+    menu.style.width = isMenuVisible ? '0px' : '10em'
+    isMenuVisible = !isMenuVisible
+    menuBtn.innerHTML = isMenuVisible ? '>' : '<'
+})
 
 level1Btn.addEventListener('click', () => {
-    createplayingField(levels.level1, 4)
+    createBoard(levels.level1, 4)
     resetTime()
     currentLevel = 1
 })
 
 level2Btn.addEventListener('click', () => {
-    createplayingField(levels.level2, 6)
+    createBoard(levels.level2, 6)
     resetTime()
     currentLevel = 2
 })
 
 level3Btn.addEventListener('click', () => {
-    createplayingField(levels.level3, 8)
+    createBoard(levels.level3, 8)
     resetTime()
     currentLevel = 3
 })
 
 level4Btn.addEventListener('click', () => {
-    createplayingField(levels.level4, 10)
+    createBoard(levels.level4, 10)
     resetTime()
     currentLevel = 4
 })
@@ -81,7 +100,6 @@ function shuffle(array){
         const temp = array[i]
         array[i] = array[j]
         array[j] = temp
-        //[array[i], array[j]] = [array[j], array[i]]
     }
     return array;
 }
@@ -104,21 +122,6 @@ function coverItem() {
     }
 }
 
-let cardsStyle = []
-let comparison = []
-let endGame = []
-let counterCheck = []
-
-const winner = document.createElement('span');
-const winnerField = document.querySelector('.winner-field');
-
-const timeLevels = {
-    level1: [],
-    level2: [],
-    level3: [],
-    level4: [],
-}
-
 document.addEventListener("DOMContentLoaded", () => {
     const scoreData1 = JSON.parse(localStorage.getItem('watchLevel1'))
     const scoreData2 = JSON.parse(localStorage.getItem('watchLevel2'))
@@ -138,7 +141,6 @@ document.addEventListener("DOMContentLoaded", () => {
     timeLevels.level4 = scoreData4 === null ? [] : scoreData4
     level4Btn.textContent = timeText4 === null ? 'Level 4' : timeText4
 })
-
 
 function theBestTime(arr, text) {
     const resultsInSeconds = arr.map((item) => item.slice(0, 2) * 60 + +item.slice(-2))
@@ -195,7 +197,7 @@ function play(endGameNum) {
                 if (endGame.length === endGameNum) {
                     clearInterval(timer);
                     //document.getElementById("off-pause").disabled = true;
-                    
+
                     winnerField.appendChild(winner);
                     winner.classList.add('winner');
                     winner.textContent = 'You won :)'
@@ -240,7 +242,6 @@ function play(endGameNum) {
 //Stopwatch
 
 const time = () => {
-	//watch.classList.remove('paused')
 	clearInterval(timer)
 	timer = setInterval(()=>{
 		milliseconds += 10
@@ -257,23 +258,3 @@ const resetTime = () => {
     watch.textContent = '00:00'
     setTimeout(time, 4000)
 }
-
-// const pauseWatch = () => {
-//   watch.classList.add('paused');
-//   clearInterval(timer);
-//   document.querySelector('.playing-field').style.pointerEvents = 'none';
-// }
-
-// const offPause = () => {
-//     time()
-//     document.querySelector('.playing-field').style.pointerEvents = 'auto'
-// }
-
-//setTimeout(offPause, 5000);
-
-// document.addEventListener('click', (e) =>{
-// 	const element = e.target;
-// 	if (element.id === 'pause') pauseWatch();
-//     if (element.id === 'off-pause') offPause();
-// });
-
