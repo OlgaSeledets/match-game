@@ -48,9 +48,25 @@ function clearBoardElement() {
     }
 }
 
+function getAllDividersOf(n) {
+    const deviders = [1]
+    let d = 2
+    while (d <= n / 2) {
+        if (n % d === 0) {
+            deviders.push(d)
+        }
+        d++
+    }
+    deviders.push(n)
+    return deviders
+}
+
 function createBoard(level, endGameNum) {
     cards = []
     clearBoardElement()
+    const deviders = getAllDividersOf(endGameNum * 2)
+    const columnCount = deviders[deviders.length / 2]
+    board.style.gridTemplateColumns = `repeat(${columnCount}, min-content)`
     info = shuffle(level);
     for (let i = 0; i < endGameNum * 2; i++) {
         let card = document.createElement('div')
