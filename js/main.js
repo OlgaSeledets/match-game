@@ -110,7 +110,7 @@ function createBoard(level) {
 menuBtn.addEventListener('click', () => {
     menu.style.width = isMenuVisible ? '0px' : '10em'
     isMenuVisible = !isMenuVisible
-    menuBtn.innerHTML = isMenuVisible ? '>' : '<'
+    menuBtn.innerHTML = isMenuVisible ? 'ᐅ' : 'ᐊ'
 })
 
 level1Btn.addEventListener('click', () => {
@@ -159,7 +159,7 @@ function cover() {
 function coverItem() {
     for (let i = 0; i < cardElements.length; i++) {
         let card = cardElements[i]
-        if (cardElements[i].style.border != '3px solid green') {
+        if (card.style.border != '3px solid green') {
             card.style.backgroundColor = 'white'
             card.textContent = '?'
         }
@@ -214,8 +214,7 @@ function play(uniqueCardCount) {
             cardElements[i].style.backgroundColor = cards[i].color
             cardElements[i].textContent = ''
             cardsStyle.push(cardElements[i].style.backgroundColor)
-            comparison.push(i);
-            console.log(counterCheck.length)
+            comparison.push(i)
             if (counterCheck.length === 2) {
                 if (counterCheck[0] === counterCheck[1]) {
                     counterCheck = []
@@ -226,9 +225,9 @@ function play(uniqueCardCount) {
                 counterCheck = []
             }
             if ((cardsStyle.length === 2 && comparison.length !== 2) || (cardsStyle.length === 2 && comparison.length === 2 && cards[comparison[0]].color !== cards[comparison[1]].color)) {
-                setTimeout(coverItem, 500);
-                cardsStyle = [];
-                comparison = [];
+                setTimeout(coverItem, 500)
+                cardsStyle = []
+                comparison = []
             } 
             else if (cardsStyle.length === 2 && comparison.length === 2 && cards[comparison[0]].color === cards[comparison[1]].color) {
                 cardElements[comparison[0]].style.border = '3px solid green'
@@ -239,11 +238,10 @@ function play(uniqueCardCount) {
                 cardElements[comparison[1]].style.pointerEvents = 'none'
                 endGame.push(i)
                 if (endGame.length === uniqueCardCount) {
-                    clearInterval(timer);
-                    //document.getElementById("off-pause").disabled = true;
+                    clearInterval(timer)
 
-                    winnerField.appendChild(winner);
-                    winner.classList.add('winner');
+                    winnerField.appendChild(winner)
+                    winner.classList.add('winner')
                     winner.textContent = 'You won :)'
 
                     switch (currentLevel) {
@@ -264,7 +262,6 @@ function play(uniqueCardCount) {
                             localStorage.setItem('watchLevel3', JSON.stringify(timeLevels.level3))
                             theBestTime(timeLevels.level3, level3Btn)
                             console.log(timeLevels.level3)
-                            console.log(currentLevel)
                             break
                         case 4:
                             timeLevels.level4.push(watch.textContent)
@@ -274,16 +271,14 @@ function play(uniqueCardCount) {
                             break
                     }
                 }
-                cardsStyle = [];
-                comparison = [];
+                cardsStyle = []
+                comparison = []
             }
         });
     }
     endGame = []
     winner.textContent = ' '
 }
-
-//Stopwatch
 
 const time = () => {
 	clearInterval(timer)
